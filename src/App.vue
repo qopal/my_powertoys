@@ -1,26 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="center" style="padding: 0px 0px;">
+    <!-- 左側のコンテンツ -->
+    <div style="flex: 3;">
+      <submitTime />
+    </div>
+
+    <!-- 右側のコンテンツ -->
+    <div style="flex: 1;">
+      <timeLine />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import submitTime from './components/submitTime.vue'
+import timeLine from './components/timeLine.vue'
 export default {
-  name: 'App',
+  name: 'OptionPage',
   components: {
-    HelloWorld
+    submitTime,
+    timeLine
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import '/src/assets/style.css';
 </style>

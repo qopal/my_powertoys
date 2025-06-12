@@ -1,0 +1,95 @@
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  color: #2c3e50;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 0 10px;
+}
+
+a {
+  color: #42b983;
+}
+
+button {
+  padding: 3px 5px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.startButton {
+  background-color: #007BFF;
+  color: white;
+}
+
+.startButton:hover {
+  background-color: #0056b3;
+}
+
+.stopButton {
+  padding: 1px 5px;
+  background-color: #808080; 
+  color: white;
+}
+
+.stopButton:hover {
+  background-color: #606060; 
+}
+
+.blink {  
+  font-size: 20px; 
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
+.large-input {
+  width: 200px;
+}
+.time-input {
+  border: 1px solid #ccc; /* 薄いグレーのボーダー */
+  margin: 3px 0; /* 外側の余白 */
+  font-size: 13px; /* フォントサイズ */
+  background-color: #f9f9f9; /* 背景色 */
+  border-radius: 4px; /* 角の丸み */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 内側の影 */
+  transition: border-color 0.3s, box-shadow 0.3s; /* トランジション効果 */
+}
+
+.time-input:focus {
+  border-color: #64b5f6; /* フォーカス時のボーダーカラー */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(100, 181, 246, 0.6); /* フォーカス時の影 */
+}
+
+.center {
+  justify-content: center;
+  display: flex;
+}
+
+.full {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
