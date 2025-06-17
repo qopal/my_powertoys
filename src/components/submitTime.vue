@@ -13,19 +13,28 @@
   </div>
 
   <h1 class="center">勤務記録の集計</h1>
+  <div style="text-align: left; margin-left: 1rem;">
+    <button @click="addProject">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+    <button @click="editing = !editing">
+      <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+  </div>
   <div class="center">
     <table>
       <thead>
         <tr>
+          <th style="width: 6rem;">チケットID</th>
           <th>作業名</th>
-          <th>合計時間</th>
-          <th>チケットID</th>
-          <th>作業分類ID
+          <th style="width: 4rem;">合計時間</th>
+          <th v-if="editing" style="width: 7rem;">作業分類ID
             <button @click="showPopup = true">
               <i class="fa-solid fa-question"></i>
             </button>
           </th>
-          <th>登録時コメント</th>
+          <th v-if="editing">登録時コメント</th>
+          <th v-if="editing" style="width: 3rem;">削除</th>
         </tr>
       </thead>
       <tbody>
@@ -36,37 +45,43 @@
           @dragover.prevent
           @dragenter.prevent
         >
+          <!-- チケットID -->
+          <td>
+            <input type="text" v-if="editing" v-model="project.redmineIssueId">
+            <a v-if="!editing && redmineUrl && project.redmineIssueId" :href="`${redmineUrl}/issues/${project.redmineIssueId}`" target="_blank">
+              #{{ project.redmineIssueId }}
+            </a>
+          </td>
           <!-- 作業名 -->
           <td>
-            <div style="display: flex;">
-              <a v-show="redmineUrl && project.redmineIssueId" :href="`${redmineUrl}/issues/${project.redmineIssueId}`" target="_blank">
-                <img src="https://www.redmine.org/favicon.ico" alt="Redmineのアイコン" style="width: 1rem;">
-              </a>
               <input type="text" v-model="project.name">
-            </div>
           </td>
           <!-- 合計時間 -->
           <td><input type="time" class="time-input" :value="formatTimeForInput(project.sum)" @input="updateSum(project, $event.target.value)"></td>
-          <!-- チケットID -->
-          <td>
-            <input type="text" v-model="project.redmineIssueId" style="width: 4rem;">
-          </td>
           <!-- 作業分類ID -->
-          <td>
-            <input type="text" v-model="project.activityId" style="width: 4rem;">
+          <td v-if="editing">
+            <input type="text" v-model="project.activityId">
           </td>
           <!-- 登録時コメント -->
-          <td>
+          <td v-if="editing">
             <input type="text" v-model="project.comment">
+          </td>
+          <!-- 削除ボタン -->
+          <td v-if="editing">
+            <button @click="deleteProject(project)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <button style="width: 9rem;" @click="registerAllToRedmine">Redmineに一括登録</button>
   </div>
-
+  
   <br>
   <div class="center">
+    <button style="width: 9rem;" @click="registerAllToRedmine">Redmineに一括登録</button>
+  </div>
+  <div class="center" style="margin-top: 20px;">
     <button @click="apiKeyShow = !apiKeyShow">
       <span v-show="!apiKeyShow">接続情報登録</span>
       <span v-show="apiKeyShow">APIキーと接続先URLを非表示</span>
@@ -97,7 +112,8 @@ export default {
       successProjects: [],
       failedProjects: [],
       deleteMode: false,
-      showPopup: false
+      showPopup: false,
+      editing: false
     }
   },
   created() {
@@ -179,6 +195,15 @@ export default {
     saveRedmineUrl() {
       localStorage.setItem('redmineUrl', this.redmineUrl)
       alert('RedmineのURLを保存しました')
+    },
+    addProject() {
+      this.projects.push({name: "", startTime: null, sum: "00:00:00", redmineIssueId: '', activityId: '', comment: '', visible: true})
+    },
+    deleteProject(project) {
+      if (confirm(project.name + 'を削除しますか？')) {
+        const index = this.projects.indexOf(project)
+        this.projects.splice(index, 1)
+      }
     },
     formatTimeForInput(timeString) {
       // "H:MM:SS"または"H:MM"形式の時間を"HH:MM"に変換する
